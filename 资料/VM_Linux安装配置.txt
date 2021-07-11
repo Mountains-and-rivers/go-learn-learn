@@ -1,0 +1,142 @@
+1、虚拟机网络配置
+	NAT模式
+
+2、虚拟机VMtools
+	sudo tar -zxvf ./***.tar.gz  -C  /home/itcast
+	cd /home/itcast/
+	cd ./ vmware-tools-distrib/
+	sudo ./vmware-install.pl
+
+
+3、软件源配置
+    方法一：
+	1、软件和更新-》软件源【阿里云】
+	2、sudo apt-get updata
+    方法二： 
+	在你的软件源中添加源：
+		sudo vim /etc/apt/source.list
+		添加：deb http://cz.archive.ubuntu.com/ubuntu lucid main
+	保存退出
+
+	sudo apt-get update
+	sudo apt-get upgrade
+	sudo apt-get install **
+	
+4、常用软件
+	apt-get install net-tools
+	apt-get install tree
+	apt-get install vim
+	apt-get install gcc
+
+	apt-get install lrzsz
+	apt-get install ssh
+
+	apt-get install git
+
+5、安装golang
+	1、sudo apt-get install bison ed gawk libc6-dev make -y //安装依赖
+	2、导入软件包 http://www.golangtc.com/download
+	3、解压 sudo tar -C /usr/local -zxf 软件包
+	4、修改path
+
+		【1】单个用户配置：在 ~/.bashrc文件末尾加上如下环境变量：
+
+			vim ~/.bashrc
+		复制代码
+
+			export GOPATH=/opt/go
+			export GOROOT=/usr/local/go
+			export GOARCH=386
+			export GOOS=linux
+			export GOBIN=$GOROOT/bin/
+			export GOTOOLS=$GOROOT/pkg/tool/
+			export PATH=$PATH:$GOBIN:$GOTOOLS
+
+
+		重新加载 profile 文件，加载环境变量到内存。查看安装版本
+
+			source ~/.bashrc
+		【2】多用户配置（推荐）
+
+			vim /etc/profile 
+		复制代码
+			export GOPATH=/home/itcast/worksapce
+			export GOROOT=/usr/local/go
+			export GOBIN=$GOROOT/bin/
+			export GOARCH=386
+			export GOOS=linux
+			export GOTOOLS=$GOROOT/pkg/tool
+			export PATH=$PATH:GOROOT:$GOBIN:$GOPATH:$GOTOOLS
+		重新加载 profile 文件，加载环境变量到内存
+
+			source /etc/profile
+
+	  source /etc/profile     //加载配置文件
+          sudo reboot             //重启
+	  go -v                   //测试
+
+6、安装goland编辑器 并添加图标
+	1解压安装包
+		sudo tar xvfz goland-2017.3.3.tar.gz -C /opt/
+	2 进入到解压目录
+		cd /opt/GoLand-2017.3.3/bin/
+	3运行golang.sh文件不能用终端软件要在虚拟机下
+		./goland.sh
+
+	4、在桌面创建文件 Goland.desktop
+	[Desktop Entry]
+	Name=Goland
+	Exec=/opt/GoLand-2018.1.4/bin/goland.sh
+	Icon=/opt/GoLand-2018.1.4/bin/goland.png
+	Type=Application
+	Categories=Appliction;Development;
+	Encoding=UTF-8
+	Version=2018.1.4
+	
+	修改权限chmod 777
+
+7、安装mysql
+
+	1、ubuntu18.04安装mysql
+		sudo dpkg -i mysql-apt-config_0.*.****_all.deb
+		sudo apt-get update
+		sudo apt-get install mysql-server mysql-client -y
+	在安装的过程中需要输入mysql root的密码
+
+	2、ubuntu18.04安装libmysqlclient 驱动
+		sudo apt install libmysqlclient-dev
+		go get github.com/go-sql-driver/mysql
+		go get github.com/astaxie/beego/orm
+	3、ubuntu18.04修改mysql远程连接
+	① 登录MySQL
+
+	执行命令为：mysql -u root -p
+
+	回车后输入密码
+
+	② 选择 mysql 数据库
+
+	执行命令为：use mysql;
+
+	查看mysql 数据库中存储的用户信息的 user 表。
+
+	③ 查看mysql 数据库的 user 表中当前 root 用户的相关信息
+
+	执行命令为：select host,user,authentication_string,plugin from user;
+
+	执行完命令后显示一个表格， root 用户的 host默认显示的 localhost，说明只支持本地访问，不允许远程访问。
+
+	④ 更改 host 的默认配置
+
+	执行命令为：update user set host='%' where user='root';
+
+	⑤ 刷新
+
+	执行命令为：flush privileges;
+
+
+8.beego安装
+	go get github.com/astaxie/beego
+
+9.bee工具安装
+	go get github.com/beego/bee
